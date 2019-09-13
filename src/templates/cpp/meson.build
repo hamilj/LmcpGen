@@ -6,10 +6,16 @@ srcs_lmcp = [
   'avtas/lmcp/XMLParser.cpp',
   -<meson_source_list>-]
 
-incs_lmcp = include_directories('.')
+cpp = meson.get_compiler('cpp')
+
+# mark as system header to disable all warnings when included
+if cpp.get_id() == 'msvc'
+  incs_lmcp = include_directories('.')
+else
+  incs_lmcp = include_directories('.', is_system : true)
+endif
 
 cpp_args_lmcp = []
-cpp = meson.get_compiler('cpp')
 
 if cpp.get_id() != 'msvc'
   cpp_args_lmcp += [
